@@ -23,9 +23,11 @@
 		</div>
 		
 		<!-- Using jinja templating to generate the div blocks of all tasks in database passed from main function -->
-		{% for i in all_items %}
+		{% for i in all_tasks %}
 		<div>
 			<p> {{ i.id }}  -  {{ i.name }}</p>
+<!-- Redirecting to delete-item with unique id url along with the passing the task to the page -->
+			<a href="/delete-item/{{ i.id }}">Delete</a>
 		</div>
 		{% endfor %}
 </body>

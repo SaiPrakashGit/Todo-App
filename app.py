@@ -19,15 +19,23 @@ class Todo(db.Model):
 
 @app.route("/")
 def main():
-	all_items = Todo.query.all()
-	return render_template("index.html", all_items=all_items)
+	all_tasks = Todo.query.all()
+	return render_template("index.html", all_tasks=all_tasks)
 	
 	
 @app.route("/add-item", methods=["post"])
-def add_item():
+def add_task():
 	text = request.form.get("data")
-	new_item = Todo(name=text, state=False)
-	db.session.add(new_item)
+	new_task = Todo(name=text, state=False)
+	db.session.add(new_task)
+	db.session.commit()
+	return redirect("/")
+	
+	
+@app.route("/delete-item/<int:task_id>")
+def delete_task(task_id):
+	task = Todo.query.filter_by(id=task_id).first()
+	db.session.delete(task)
 	db.session.commit()
 	return redirect("/")
 	
