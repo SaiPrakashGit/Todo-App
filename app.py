@@ -31,6 +31,14 @@ def add_task():
 	db.session.commit()
 	return redirect("/")
 	
+
+@app.route("/mark-item/<int:task_id>")
+def mark_task(task_id):
+	task = Todo.query.filter_by(id=task_id).first()
+	task.state = not (task.state)
+	db.session.commit()
+	return redirect("/")
+
 	
 @app.route("/delete-item/<int:task_id>")
 def delete_task(task_id):

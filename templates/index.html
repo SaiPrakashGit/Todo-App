@@ -26,8 +26,19 @@
 		{% for i in all_tasks %}
 		<div>
 			<p> {{ i.id }}  -  {{ i.name }}</p>
-<!-- Redirecting to delete-item with unique id url along with the passing the task to the page -->
+			
+			{% if i.state == True %}
+			<span>Task Completed</span>
+			{% else %}
+			<span>Task Pending</span>
+			{% endif %}
+			
+<!-- Redirecting to (mark-item with unique id url) along with passing the task to the page -->
+			<a href="/mark-item/{{ i.id }}">Mark as Done</a>
+			
+<!-- Redirecting to (delete-item with unique id url) along with passing the task to the page -->
 			<a href="/delete-item/{{ i.id }}">Delete</a>
+			
 		</div>
 		{% endfor %}
 </body>
