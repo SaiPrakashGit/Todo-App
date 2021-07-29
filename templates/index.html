@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -8,7 +8,26 @@
 </head>
 
 <body>
-		<h1>Hello World<h1>
+		<div>
+			<h1>My Todo List</h1>
+			
+<!-- Routing to the /add-item section of the main application -->
+
+			<form action="/add-item" method="post">
+				<div>
+					<label>Add Item</label>
+					<input type="text" name="data" placeholder="Enter what you want to do... ">
+					<button type="submit">Add</button>
+				</div>
+			</form>
+		</div>
+		
+		<!-- Using jinja templating to generate the div blocks of all tasks in database passed from main function -->
+		{% for i in all_items %}
+		<div>
+			<p> {{ i.id }}  -  {{ i.name }}</p>
+		</div>
+		{% endfor %}
 </body>
 
 </html>
