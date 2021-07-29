@@ -4,15 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet"/>
     <title>Todo App</title>
 </head>
 
 <body>
 		<div>
 			<h1>My Todo List</h1>
-			
+			{% if message %}
+			<p>{{ message }}</p>
+			{% endif %}
 <!-- Routing to the /add-item section of the main application -->
-
 			<form action="/add-item" method="post">
 				<div>
 					<label>Add Item</label>
@@ -22,7 +24,8 @@
 			</form>
 		</div>
 		
-		<!-- Using jinja templating to generate the div blocks of all tasks in database passed from main function -->
+<!-- Using jinja templating to generate the div blocks of all tasks in database passed from main function -->
+		
 		{% for i in all_tasks %}
 		<div>
 			<p> {{ i.id }}  -  {{ i.name }}</p>

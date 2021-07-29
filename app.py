@@ -27,9 +27,13 @@ def main():
 def add_task():
 	text = request.form.get("data")
 	new_task = Todo(name=text, state=False)
-	db.session.add(new_task)
-	db.session.commit()
-	return redirect("/")
+	if text == '':
+		all_tasks = Todo.query.all()
+		return render_template("index.html", message = 'Task creation failed. Please enter required fields to create a task', all_tasks=all_tasks )
+	else:
+		db.session.add(new_task)
+		db.session.commit()
+		return redirect("/")
 	
 
 @app.route("/mark-item/<int:task_id>")
