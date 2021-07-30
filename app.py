@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 
 class Todo(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
-	name = db.Column(db.String(50))			# Maximum of 50 characters
+	name = db.Column(db.String(100))			# Maximum of 100 characters
 	state = db.Column(db.Boolean) 			# Only 2 states  ( finished/not finished )
 
 
@@ -25,19 +25,23 @@ def main():
 	
 @app.route("/add-item", methods=["post"])
 def add_task():
-	text = request.form.get("data")
+	text = request.form.get("data")			# Requesting form data which is posted to /add-item url
 	new_task = Todo(name=text, state=False)
+	all_tasks = Todo.query.all()
+	task = Todo.query.filter_by(name=text).first()		# Checking whether there exists a same task in the database already
 	if text == '':
-		all_tasks = Todo.query.all()
-		return render_template("index.html", message = 'Task creation failed. Please enter required fields to create a task', all_tasks=all_tasks )
+		return render_template("index.html", message = 'Please enter required fields to create a task.', all_tasks=all_tasks )
 	else:
-		db.session.add(new_task)
-		db.session.commit()
-		return redirect("/")
+		if task:
+			return render_template("index.html", message = 'This task already exists, Please create another task.', all_tasks=all_tasks )
+		else:
+			db.session.add(new_task)
+			db.session.commit()
+			return redirect("/")
 	
 
 @app.route("/mark-item/<int:task_id>")
-def mark_task(task_id):
+def mark_task(task_id):						# Catching data which is posted to /mark-item url by the html button
 	task = Todo.query.filter_by(id=task_id).first()
 	task.state = not (task.state)
 	db.session.commit()
@@ -45,13 +49,14 @@ def mark_task(task_id):
 
 	
 @app.route("/delete-item/<int:task_id>")
-def delete_task(task_id):
+def delete_task(task_id):					# Catching data which is posted to /mark-item url by the html button
 	task = Todo.query.filter_by(id=task_id).first()
 	db.session.delete(task)
 	db.session.commit()
 	return redirect("/")
 	
 	
-if __name__ == "__main__" :
-	db.create_all()						# Creates the data structure of given class
-	app.run(debug=True)
+if __name__ == "__main__" :			# Don't run the app when this module is imported by any other program
+	db.create_all()					# Creates the data structure(table) of given class
+	app.debug = True
+	app.run()
