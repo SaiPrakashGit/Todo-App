@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-ENV = 'development'			# To be changed to production when it needs to be deployed
+ENV = 'prod'			# To be changed to production when it needs to be deployed
 
 if ENV == 'development':
 	# Configuring the database for the app (Here, I am using SQLAlchemy as I found is easy to configure)
