@@ -11,7 +11,7 @@ if ENV == 'development':
 	app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Sai12345@localhost/todo'  #'sqlite:///db.sqlite'
 	app.debug = True
 else:
-    app.debug = False
+    app.debug = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://htficbrwxniwib:f5eb46c659aeeee038ef275726a836b741e3302aa08d1ce9c591a45fbc81d2c9@ec2-54-83-82-187.compute-1.amazonaws.com:5432/del4mdljo8oc8a'	# Address of the heroku database
 
 
