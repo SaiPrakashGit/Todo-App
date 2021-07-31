@@ -3,18 +3,33 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# Configuring the database for the app (Here, I am using SQLAlchemy as I found is easy to configure)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-# Creates database file in current folder(we gave the relative path) while running the app
+ENV = 'production'			# To be changed to production when it needs to be deployed
+
+if ENV == 'development':
+	# Configuring the database for the app (Here, I am using SQLAlchemy as I found is easy to configure)
+	# Creates database file in current folder(we gave the relative path) while running the app
+	app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Sai12345@localhost/todo'  #'sqlite:///db.sqlite'
+	app.debug = True
+else:
+    app.debug = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://htficbrwxniwib:f5eb46c659aeeee038ef275726a836b741e3302aa08d1ce9c591a45fbc81d2c9@ec2-54-83-82-187.compute-1.amazonaws.com:5432/del4mdljo8oc8a'	# Address of the heroku database
+
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 # Now, we create a class for the todo list item which has properties like id, name and state(finished or not)
 
 class Todo(db.Model):
+	__tablename__ = 'tasks'
 	id = db.Column(db.Integer, primary_key = True)
 	name = db.Column(db.String(100))			# Maximum of 100 characters
 	state = db.Column(db.Boolean) 			# Only 2 states  ( finished/not finished )
+
+	def __init__(self, name, state):
+		self.name = name
+		self.state = state
 
 
 @app.route("/")
@@ -58,5 +73,4 @@ def delete_task(task_id):					# Catching data which is posted to /mark-item url 
 	
 if __name__ == "__main__" :			# Don't run the app when this module is imported by any other program
 	db.create_all()					# Creates the data structure(table) of given class
-	app.debug = True
 	app.run()

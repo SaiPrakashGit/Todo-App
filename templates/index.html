@@ -33,7 +33,7 @@
 			<h3>Current Tasks in the list :</h3>
 			{% for i in all_tasks %}
 			<div class="ui segment">
-				<p class="ui big header">{{ i.id }}  -  {{ i.name }}</p>
+				<p class="ui big header"> =>   {{ i.name }}</p>
 				
 				{% if i.state == True %}
 				<span class="ui green label">Task Completed</span>
