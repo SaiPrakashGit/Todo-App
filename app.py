@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-ENV = 'production'			# To be changed to production when it needs to be deployed
+ENV = 'development'			# To be changed to production when it needs to be deployed
 
 if ENV == 'development':
 	# Configuring the database for the app (Here, I am using SQLAlchemy as I found is easy to configure)
@@ -27,9 +27,9 @@ class Todo(db.Model):
 	name = db.Column(db.String(100))			# Maximum of 100 characters
 	state = db.Column(db.Boolean) 			# Only 2 states  ( finished/not finished )
 
-	def __init__(self, name, state):
+	def __init__(self, name):
 		self.name = name
-		self.state = state
+		self.state = False
 
 
 @app.route("/")
@@ -41,7 +41,7 @@ def main():
 @app.route("/add-item", methods=["post"])
 def add_task():
 	text = request.form.get("data")			# Requesting form data which is posted to /add-item url
-	new_task = Todo(name=text, state=False)
+	new_task = Todo(text)
 	all_tasks = Todo.query.all()
 	task = Todo.query.filter_by(name=text).first()		# Checking whether there exists a same task in the database already
 	if text == '':
