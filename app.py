@@ -72,5 +72,5 @@ def delete_task(task_id):					# Catching data which is posted to /mark-item url 
 	
 	
 if __name__ == "__main__" :			# Don't run the app when this module is imported by any other program
-	#db.create_all()					# Creates the data structure(table) of given class
+	db.create_all()					# Creates the data structure(table) of given class
 	app.run()
