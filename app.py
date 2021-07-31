@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-ENV = 'prod'			# To be changed to production when it needs to be deployed
+ENV = 'production'			# To be changed to production when it needs to be deployed
 
 if ENV == 'development':
 	# Configuring the database for the app (Here, I am using SQLAlchemy as I found is easy to configure)
@@ -11,8 +11,8 @@ if ENV == 'development':
 	app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Sai12345@localhost/todo'  #'sqlite:///db.sqlite'
 	app.debug = True
 else:
-    app.debug = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://htficbrwxniwib:f5eb46c659aeeee038ef275726a836b741e3302aa08d1ce9c591a45fbc81d2c9@ec2-54-83-82-187.compute-1.amazonaws.com:5432/del4mdljo8oc8a'	# Address of the heroku database
+    app.debug = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite' #'postgres://htficbrwxniwib:f5eb46c659aeeee038ef275726a836b741e3302aa08d1ce9c591a45fbc81d2c9@ec2-54-83-82-187.compute-1.amazonaws.com:5432/del4mdljo8oc8a'	# Address of the heroku database
 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
